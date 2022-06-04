@@ -11,7 +11,9 @@ QBCore farm system with seeds and some more things
 
 # Instalation:
 
-Add to qb-target/init.lua:
+- Run SQL File
+
+- Add to qb-target/init.lua:
 
 ```
     ["farm_vaca"] = {
@@ -30,7 +32,7 @@ Add to qb-target/init.lua:
     },
 ```
 
-Add to qb-core/shared/items.lua
+- Add to qb-core/shared/items.lua
 
 ```
 	--mt-farm 2.0
@@ -78,7 +80,7 @@ Add to qb-core/shared/items.lua
 
 ```
 
-Add images to qb-inventory/html/images
+- Add images to qb-inventory/html/images
 
 ##
 
