@@ -13,7 +13,7 @@ QBCore farm system with seeds and some more things
 
 - Run SQL File
 
-- Add to qb-target/init.lua:
+- Add to qb-target/init.lua at Config.TargetModels:
 
 ```
     ["farm_vaca"] = {
