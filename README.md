@@ -83,7 +83,7 @@ Add images to qb-inventory/html/images
 ##
 
 # Credits:
--  Some code used from:  https://github.com/dojwun/doj-marijuana
+Some code used from: https://github.com/dojwun/doj-marijuana
 
 # Dependicies:
 - qb-core: https://github.com/qbcore-framework/qb-core
