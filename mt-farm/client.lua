@@ -813,6 +813,18 @@ Citizen.CreateThread(function()
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentString('Farm Process')
         EndTextCommandSetBlipName(blip)
+		
+    local blip = AddBlipForCoord(1469.82, 6550.53, 14.9)
+    
+        SetBlipSprite (blip, 88)
+        SetBlipDisplay(blip, 2)
+        SetBlipScale  (blip, 0.9)
+        SetBlipColour (blip, 37)
+        SetBlipAsShortRange(blip, true)
+    
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString('Farm Sell')
+        EndTextCommandSetBlipName(blip)
 end)
 
 -- Frutas
