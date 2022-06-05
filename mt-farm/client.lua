@@ -1157,8 +1157,8 @@ RegisterNetEvent('mt-farm:client:ProcessarLimao', function()
         disableMouse = false,
         disableCombat = true,
     }, {}, {}, {}, function()
-        TriggerEvent('animations:client:ProcessarLimao', {"c"})
-        TriggerServerEvent('mt-farm:server:ProcessarPera')
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        TriggerServerEvent('mt-farm:server:ProcessarLimao')
     end)
 end)
 
