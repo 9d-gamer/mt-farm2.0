@@ -1125,14 +1125,14 @@ end)
 
 RegisterNetEvent('mt-farm:client:ProcessarManga', function()
     TriggerEvent('animations:client:EmoteCommandStart', {"clipboard2"})
-    QBCore.Functions.Progressbar('name_here', 'MAKING APPLE JUICE...', 5000, false, true, {
+    QBCore.Functions.Progressbar('name_here', 'MAKING MANGO JUICE...', 5000, false, true, {
         disableMovement = true,
         disableCarMovement = true,
         disableMouse = false,
         disableCombat = true,
     }, {}, {}, {}, function()
         TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-        TriggerServerEvent('mt-farm:server:ProcessarMaca')
+        TriggerServerEvent('mt-farm:server:ProcessarManga')
     end)
 end)
 
