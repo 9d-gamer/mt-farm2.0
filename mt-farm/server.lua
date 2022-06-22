@@ -561,21 +561,19 @@ RegisterNetEvent('mt-farm:server:venderTudo', function()
     local src = source
     local price = 0
     local Player = QBCore.Functions.GetPlayer(src)
-    
-    local xItem = Player.Functions.GetItemsByName(ItemList)
-    if xItem ~= nil then
+    if Player.PlayerData.items ~= nil and next(Player.PlayerData.items) ~= nil then
         for k, v in pairs(Player.PlayerData.items) do
             if Player.PlayerData.items[k] ~= nil then
                 if ItemList[Player.PlayerData.items[k].name] ~= nil then
                     price = price + (ItemList[Player.PlayerData.items[k].name] * Player.PlayerData.items[k].amount)
                     Player.Functions.RemoveItem(Player.PlayerData.items[k].name, Player.PlayerData.items[k].amount, k)
-
-        Player.Functions.AddMoney("cash", price, "sold-aliments")
-            TriggerClientEvent('QBCore:Notify', src, "You sell some aliments for $"..price)
+                    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Player.PlayerData.items[k].name], "remove", Player.PlayerData.items[k].amount)
                 end
             end
         end
-    else
-        TriggerClientEvent('QBCore:Notify', src, "You dont/'t have anything to sell..")
-    end
+        Player.Functions.AddMoney("cash", price)
+        TriggerClientEvent('QBCore:Notify', src, "You sell some aliments for $"..price)
+    else 
+		TriggerClientEvent('QBCore:Notify', src, "You dont/'t have anything to sell..")
+	end
 end)
