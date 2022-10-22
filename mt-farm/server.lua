@@ -577,3 +577,10 @@ RegisterNetEvent('mt-farm:server:venderTudo', function()
 		TriggerClientEvent('QBCore:Notify', src, "You dont/'t have anything to sell..")
 	end
 end)
+
+RegisterNetEvent('mt-farm:server:AddItem', function(ItemName, ItemAmount)
+    local Player = QBCore.Functions.GetPlayer(source)
+
+    Player.Functions.AddItem(ItemName, ItemAmount)
+    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[ItemName], "add", ItemAmount)
+end)

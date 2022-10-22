@@ -404,8 +404,8 @@ end)
 RegisterNetEvent("mt-farm:client:startPlanting",function(plant)
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
+    local HasItem = QBCore.Functions.HasItem('farm_pa')
 
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
     if HasItem then
         if GetDistanceBetweenCoords(coords, Config.FarmField, true) < 50 then
     TaskStartScenarioInPlace(PlayerPedId(), 'world_human_gardener_plant', 0, false)
@@ -423,7 +423,6 @@ RegisterNetEvent("mt-farm:client:startPlanting",function(plant)
     else
         QBCore.Functions.Notify('You need a Shovel to plant that...', 'error', 7500)
     end
-    end, "farm_pa")
 end)
 
 RegisterNetEvent("mt-farm:client:addPlant",function(seed, coords, id)
