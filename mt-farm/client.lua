@@ -437,61 +437,59 @@ RegisterNetEvent('mt-farm:client:cropOptions', function(args, data)
     local args = tonumber(args)
 	if args == 1 then
         local percent = Config.FertilizerQuantity
-        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-            if HasItem then
-                QBCore.Functions.Notify("+"..percent.." fertilizer", "success")
-                if percent > 0 then
-                    CurrentPlantInfo.food = CurrentPlantInfo.food + percent
-                    if CurrentPlantInfo.food > 100 then
-                        CurrentPlantInfo.food = 100
-                    end
-                    TaskStartScenarioInPlace(PlayerPedId(), 'world_human_gardener_plant', 0, false)
-                    QBCore.Functions.Progressbar('add_fertilizante', 'ADDING FERTILIZER...', 5000, false, true, {
-                        disableMovement = true,
-                        disableCarMovement = true,
-                        disableMouse = false,
-                        disableCombat = true,
-                    }, { }, {}, {}, function()
-                    TriggerServerEvent("mt-farm:server:updatePlant", CurrentPlant, CurrentPlantInfo)
-                    TriggerServerEvent("QBCore:Server:RemoveItem", "farm_fertilizante", 1)
-                    TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["farm_fertilizante"], "remove", 1) 
-                    PlantMenuStacic()
-                    end)
+        local HasItem = QBCore.Functions.HasItem('farm_fertilizante')
+        if HasItem then
+            QBCore.Functions.Notify("+"..percent.." fertilizer", "success")
+            if percent > 0 then
+                CurrentPlantInfo.food = CurrentPlantInfo.food + percent
+                if CurrentPlantInfo.food > 100 then
+                    CurrentPlantInfo.food = 100
                 end
-            else
-                PlantMenuAlive()
-                QBCore.Functions.Notify("You dont have any fertilizer", "error")
+                TaskStartScenarioInPlace(PlayerPedId(), 'world_human_gardener_plant', 0, false)
+                QBCore.Functions.Progressbar('add_fertilizante', 'ADDING FERTILIZER...', 5000, false, true, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, { }, {}, {}, function()
+                TriggerServerEvent("mt-farm:server:updatePlant", CurrentPlant, CurrentPlantInfo)
+                TriggerServerEvent("QBCore:Server:RemoveItem", "farm_fertilizante", 1)
+                TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["farm_fertilizante"], "remove", 1) 
+                PlantMenuStacic()
+                end)
             end
-        end, "farm_fertilizante")
+        else
+            PlantMenuAlive()
+            QBCore.Functions.Notify("You dont have any fertilizer", "error")
+        end
     elseif args == 2 then
         local percent = Config.WaterQuantity
-        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-            if HasItem then
-                QBCore.Functions.Notify("+"..percent.." Water", "success")
-                if percent > 0 then
-                    CurrentPlantInfo.water = CurrentPlantInfo.water + percent
-                    if CurrentPlantInfo.water > 100 then
-                        CurrentPlantInfo.water = 100
-                    end
-                    TriggerEvent('animations:client:EmoteCommandStart', {"mechanic3"})
-                    QBCore.Functions.Progressbar('add_water', 'ADDING WATER...', 5000, false, true, {
-                        disableMovement = true,
-                        disableCarMovement = true,
-                        disableMouse = false,
-                        disableCombat = true,
-                    }, { }, {}, {}, function()
-                    TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-                    TriggerServerEvent("mt-farm:server:updatePlant", CurrentPlant, CurrentPlantInfo)
-                    TriggerServerEvent("QBCore:Server:RemoveItem", "farm_regador_cheio", 1)
-                    TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["farm_regador_cheio"], "remove", 1)
-                    PlantMenuStacic()
-                    end)
+        local HasItem = QBCore.Functions.HasItem('farm_regador_cheio')
+        if HasItem then
+            QBCore.Functions.Notify("+"..percent.." Water", "success")
+            if percent > 0 then
+                CurrentPlantInfo.water = CurrentPlantInfo.water + percent
+                if CurrentPlantInfo.water > 100 then
+                    CurrentPlantInfo.water = 100
                 end
-            else
-                PlantMenuAlive()
-                QBCore.Functions.Notify("You dont have any water", "error")
+                TriggerEvent('animations:client:EmoteCommandStart', {"mechanic3"})
+                QBCore.Functions.Progressbar('add_water', 'ADDING WATER...', 5000, false, true, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, { }, {}, {}, function()
+                TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+                TriggerServerEvent("mt-farm:server:updatePlant", CurrentPlant, CurrentPlantInfo)
+                TriggerServerEvent("QBCore:Server:RemoveItem", "farm_regador_cheio", 1)
+                TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["farm_regador_cheio"], "remove", 1)
+                PlantMenuStacic()
+                end)
             end
-        end, "farm_regador_cheio")
+        else
+            PlantMenuAlive()
+            QBCore.Functions.Notify("You dont have any water", "error")
+        end
     elseif args == 3 then
         local ped = PlayerPedId()
         TaskStartScenarioInPlace(ped, "world_human_gardener_plant", 0, false)
@@ -830,140 +828,134 @@ end)
 
 RegisterNetEvent('mt-farm:client:ApanharMacas', function()
     local quantidade = Config.FruitQuantity
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-        if HasItem then
-            QBCore.Functions.Progressbar('pick_apple', 'PICKING APPLES...', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'anim@gangops@facility@servers@',
-                anim = 'hotwire',
-                flags = 16,
-            }, {}, {}, function()
-                ClearPedTasks(PlayerPedId())
-                TriggerServerEvent('QBCore:Server:AddItem', "farm_maca", quantidade)
-            end)
-        else
-            QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
-        end
-    end, 'farm_tesoura')
+    local HasItem = QBCore.Functions.HasItem('farm_tesoura')
+    if HasItem then
+        QBCore.Functions.Progressbar('pick_apple', 'PICKING APPLES...', 7500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@gangops@facility@servers@',
+            anim = 'hotwire',
+            flags = 16,
+        }, {}, {}, function()
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('mt-farm:server:AddItem', "farm_maca", quantidade)
+        end)
+    else
+        QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
+    end
 end)
 
 RegisterNetEvent('mt-farm:client:ApanharLaranjas', function()
     local quantidade = Config.FruitQuantity
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-        if HasItem then
-            QBCore.Functions.Progressbar('pick_apple', 'PICKING ORANGES...', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'anim@gangops@facility@servers@',
-                anim = 'hotwire',
-                flags = 16,
-            }, {}, {}, function()
-                ClearPedTasks(PlayerPedId())
-                TriggerServerEvent('QBCore:Server:AddItem', "farm_laranja", quantidade)
-            end)
-        else
-            QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
-        end
-    end, 'farm_tesoura')
+    local HasItem = QBCore.Functions.HasItem('farm_tesoura')
+    if HasItem then
+        QBCore.Functions.Progressbar('pick_apple', 'PICKING ORANGES...', 7500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@gangops@facility@servers@',
+            anim = 'hotwire',
+            flags = 16,
+        }, {}, {}, function()
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('mt-farm:server:AddItem', "farm_laranja", quantidade)
+        end)
+    else
+        QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
+    end
 end)
 
 RegisterNetEvent('mt-farm:client:ApanharLimao', function()
     local quantidade = Config.FruitQuantity
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-        if HasItem then
-            QBCore.Functions.Progressbar('pick_apple', 'PICKING LIMONS...', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'anim@gangops@facility@servers@',
-                anim = 'hotwire',
-                flags = 16,
-            }, {}, {}, function()
-                ClearPedTasks(PlayerPedId())
-                TriggerServerEvent('QBCore:Server:AddItem', "farm_limao", quantidade)
-            end)
-        else
-            QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
-        end
-    end, 'farm_tesoura')
+    local HasItem = QBCore.Functions.HasItem('farm_tesoura')
+    if HasItem then
+        QBCore.Functions.Progressbar('pick_apple', 'PICKING LIMONS...', 7500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@gangops@facility@servers@',
+            anim = 'hotwire',
+            flags = 16,
+        }, {}, {}, function()
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('mt-farm:server:AddItem', "farm_limao", quantidade)
+        end)
+    else
+        QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
+    end
 end)
 
 RegisterNetEvent('mt-farm:client:ApanharPeras', function()
     local quantidade = Config.FruitQuantity
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-        if HasItem then
-            QBCore.Functions.Progressbar('pick_apple', 'PICKING PEARS...', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'anim@gangops@facility@servers@',
-                anim = 'hotwire',
-                flags = 16,
-            }, {}, {}, function()
-                ClearPedTasks(PlayerPedId())
-                TriggerServerEvent('QBCore:Server:AddItem', "farm_pera", quantidade)
-            end)
-        else
-            QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
-        end
-    end, 'farm_tesoura')
+    local HasItem = QBCore.Functions.HasItem('farm_tesoura')
+    if HasItem then
+        QBCore.Functions.Progressbar('pick_apple', 'PICKING PEARS...', 7500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@gangops@facility@servers@',
+            anim = 'hotwire',
+            flags = 16,
+        }, {}, {}, function()
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('mt-farm:server:AddItem', "farm_pera", quantidade)
+        end)
+    else
+        QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
+    end
 end)
 
 RegisterNetEvent('mt-farm:client:ApanharPessegos', function()
     local quantidade = Config.FruitQuantity
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-        if HasItem then
-            QBCore.Functions.Progressbar('pick_apple', 'PICKING PEACHES...', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'anim@gangops@facility@servers@',
-                anim = 'hotwire',
-                flags = 16,
-            }, {}, {}, function()
-                ClearPedTasks(PlayerPedId())
-                TriggerServerEvent('QBCore:Server:AddItem', "farm_pessego", quantidade)
-            end)
-        else
-            QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
-        end
-    end, 'farm_tesoura')
+    local HasItem = QBCore.Functions.HasItem('farm_tesoura')
+    if HasItem then
+        QBCore.Functions.Progressbar('pick_apple', 'PICKING PEACHES...', 7500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@gangops@facility@servers@',
+            anim = 'hotwire',
+            flags = 16,
+        }, {}, {}, function()
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('mt-farm:server:AddItem', "farm_pessego", quantidade)
+        end)
+    else
+        QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
+    end
 end)
 
 RegisterNetEvent('mt-farm:client:ApanharMangas', function()
     local quantidade = Config.FruitQuantity
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-        if HasItem then
-            QBCore.Functions.Progressbar('pick_apple', 'PICKING MANGOS...', 7500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = 'anim@gangops@facility@servers@',
-                anim = 'hotwire',
-                flags = 16,
-            }, {}, {}, function()
-                ClearPedTasks(PlayerPedId())
-                TriggerServerEvent('QBCore:Server:AddItem', "farm_manga", quantidade)
-            end)
-        else
-            QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
-        end
-    end, 'farm_tesoura')
+    local HasItem = QBCore.Functions.HasItem('farm_tesoura')
+    if HasItem then
+        QBCore.Functions.Progressbar('pick_apple', 'PICKING MANGOS...', 7500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = 'anim@gangops@facility@servers@',
+            anim = 'hotwire',
+            flags = 16,
+        }, {}, {}, function()
+            ClearPedTasks(PlayerPedId())
+            TriggerServerEvent('mt-farm:server:AddItem', "farm_manga", quantidade)
+        end)
+    else
+        QBCore.Functions.Notify('You dont have a Scisors', 'error', 7500)
+    end
 end)
 
 -- Processo
