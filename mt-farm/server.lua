@@ -584,3 +584,21 @@ RegisterNetEvent('mt-farm:server:AddItem', function(ItemName, ItemAmount)
     Player.Functions.AddItem(ItemName, ItemAmount)
     TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[ItemName], "add", ItemAmount)
 end)
+
+RegisterNetEvent('mt-farm:server:RemoveItem', function(ItemName, ItemAmount)
+    local Player = QBCore.Functions.GetPlayer(source)
+
+    Player.Functions.RemoveItem(ItemName, ItemAmount)
+    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[ItemName], "remove", ItemAmount)
+end)
+
+
+QBCore.Functions.CreateCallback('mt-farm:server:VerificarItem', function(source, cb, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+
+    if Player.Functions.GetItemByName(item) then
+        cb(true)
+    else
+        cb(false)
+    end
+end)
